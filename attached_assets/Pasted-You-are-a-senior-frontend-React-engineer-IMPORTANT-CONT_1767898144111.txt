@@ -1,0 +1,127 @@
+You are a senior frontend React engineer.
+
+IMPORTANT CONTEXT:
+• This is an EXISTING, WORKING MERN application
+• Inventory, Sales, Transactions, Expenses, Net Profit already work
+• Backend APIs already exist
+• DO NOT rebuild the app
+• DO NOT remove existing functionality
+• This task is UI + frontend logic ONLY
+
+--------------------------------------------------
+TASK 1: RESTRUCTURE EXPENSE DASHBOARD INTO TABS
+--------------------------------------------------
+
+Currently, the Expenses page shows:
+• Expense form
+• Recent expenses table
+• Expense graph
+ALL on one screen.
+
+UPDATE this page to use a TAB LAYOUT with THREE tabs:
+
+Tabs:
+1) "Add Expense"
+2) "Expense List"
+3) "Expense Graph"
+
+--------------------------------------------------
+TAB 1: ADD EXPENSE
+--------------------------------------------------
+Move the existing expense form into this tab.
+
+No logic change required.
+Fields remain:
+• Amount
+• Expense Type
+• Expense Date
+• Description
+• Save button
+
+--------------------------------------------------
+TAB 2: EXPENSE LIST
+--------------------------------------------------
+Move the "Recent Expenses" table into this tab.
+
+ADD FILTER CONTROLS at the top:
+• Month dropdown (Jan–Dec)
+• Year dropdown (e.g. current year ± 5 years)
+• Default = current month & year
+
+Behavior:
+• Changing month/year updates the table
+• Use existing backend APIs if available
+• Otherwise filter client-side safely
+
+--------------------------------------------------
+TAB 3: EXPENSE GRAPH
+--------------------------------------------------
+Move the "Expense Trends" graph into this tab.
+
+ADD YEAR SELECTOR:
+• Dropdown to select year
+• Default = current year
+
+Graph behavior:
+• Show MONTHLY expense for selected year
+• X-axis = Months
+• Y-axis = Total expense
+
+VERY IMPORTANT UI RULE:
+• Graph styling MUST MATCH the MAIN DASHBOARD graph
+• Same bar width
+• Same spacing
+• Same padding
+• Same responsiveness
+• Only data source differs (expenses instead of profit)
+
+--------------------------------------------------
+TASK 2: MAIN DASHBOARD — YEAR FILTER FOR PROFIT GRAPH
+--------------------------------------------------
+
+On the MAIN DASHBOARD:
+
+Add a YEAR SELECTOR above the "Monthly Net Profit Overview" graph.
+
+Behavior:
+• Default = current year
+• When year changes:
+  - Fetch profit data for selected year
+  - Update monthly profit bars accordingly
+
+UI RULES:
+• Selector should be small and unobtrusive
+• Match style used in Expenses graph year selector
+• Do NOT redesign the dashboard
+
+--------------------------------------------------
+TECHNICAL CONSTRAINTS
+--------------------------------------------------
+
+• Do NOT modify backend routes unless absolutely required
+• Reuse existing summary APIs where possible
+• If backend already supports year filtering, use it
+• Otherwise, safely extend frontend query params
+
+--------------------------------------------------
+QUALITY RULES
+--------------------------------------------------
+
+• No breaking changes
+• No backend refactor
+• No duplicate logic
+• No console errors
+• Tabs should preserve state while switching
+• Use ₹ everywhere
+
+--------------------------------------------------
+FINAL EXPECTED RESULT
+--------------------------------------------------
+
+After update:
+• Expenses page has clean 3-tab layout
+• Expense list can be filtered by month & year
+• Expense graph supports year selection
+• Graph UI matches main dashboard style
+• Main dashboard profit graph supports year selection
+• Overall UI looks clean, consistent, and professional

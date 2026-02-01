@@ -1,0 +1,139 @@
+You are a senior full‑stack MERN engineer.
+
+THIS IS A BUG‑FIX TASK, NOT A NEW FEATURE.
+DO NOT PLAN. DO NOT EXPLAIN.
+YOU MUST MODIFY AND SAVE CODE FILES.
+
+--------------------------------------------------
+CRITICAL CONTEXT
+--------------------------------------------------
+• This is an EXISTING, WORKING MERN application
+• Sell bills are being created correctly
+• Backend already calculates revenue
+• Revenue tab UI already exists
+• Revenue ALWAYS shows ₹0 (BUG)
+• Profit works correctly
+• Inventory works correctly
+• Expenses work correctly
+
+--------------------------------------------------
+ROOT CAUSE (ALREADY IDENTIFIED)
+--------------------------------------------------
+Backend returns revenue fields, BUT frontend
+TypeScript types and hooks do NOT include them,
+so revenue data is silently discarded.
+
+This causes:
+• currentMonthRevenue = undefined → shown as ₹0
+• totalYearlyRevenue = undefined → shown as ₹0
+• monthlyData[].revenue ignored → empty graph
+• TypeScript warnings in dashboard.tsx
+
+--------------------------------------------------
+YOU MUST FIX ALL OF THE FOLLOWING
+--------------------------------------------------
+
+==============================
+STEP 1 — BACKEND (VERIFY ONLY)
+==============================
+Open:
+server/storage.ts
+
+VERIFY that getDashboardStats() RETURNS:
+• currentMonthRevenue (number)
+• totalYearlyRevenue (number)
+• monthlyData[].revenue (number)
+
+Revenue definition MUST be:
+revenue = sellingPrice × quantity
+(using sellBills.totalAmount)
+
+DO NOT change profit logic.
+DO NOT change expense logic.
+
+==============================
+STEP 2 — FRONTEND TYPES (MANDATORY)
+==============================
+Open:
+client/hooks/use-dashboard.ts
+(or wherever dashboard stats types are defined)
+
+UPDATE the DashboardStats type to EXACTLY:
+
+interface DashboardStats {
+  currentMonthProfit: number;
+  totalYearlyProfit: number;
+  currentMonthRevenue: number;
+  totalYearlyRevenue: number;
+  totalInventoryValue: number;
+  monthlyData: {
+    date: string;
+    profit: number;
+    revenue: number;
+  }[];
+}
+
+REMOVE any outdated or partial typing.
+
+==============================
+STEP 3 — FIX DASHBOARD HOOK
+==============================
+Ensure useDashboardStats():
+• Returns FULL backend response
+• Does NOT omit revenue fields
+• Does NOT cast to a smaller type
+• Does NOT use `as any`
+
+==============================
+STEP 4 — FIX dashboard.tsx
+==============================
+Open:
+client/pages/dashboard.tsx
+
+1) REMOVE revenue fallbacks like:
+   stats.currentMonthRevenue || 0
+   stats.totalYearlyRevenue || 0
+
+2) USE:
+   stats.currentMonthRevenue
+   stats.totalYearlyRevenue
+
+3) ENSURE revenue graph uses:
+   dataKey="revenue"
+
+4) Ensure filteredMonthlyData contains:
+   { date, profit, revenue }
+
+==============================
+STEP 5 — VERIFY FUNCTIONALITY
+==============================
+After implementing:
+
+• Create ONE Sell Bill
+• Revenue cards MUST update immediately
+• Revenue graph MUST show bar
+• Profit tab MUST remain unchanged
+• No TypeScript warnings
+• No console errors
+
+--------------------------------------------------
+STRICT RULES
+--------------------------------------------------
+❌ DO NOT redesign UI
+❌ DO NOT add new APIs
+❌ DO NOT remove existing logic
+❌ DO NOT return “Checkpoint made” without file changes
+
+YOU MUST MODIFY AT LEAST:
+• use-dashboard.ts
+• dashboard.tsx
+(backend only if verification fails)
+
+--------------------------------------------------
+SUCCESS CRITERIA
+--------------------------------------------------
+Revenue ≠ ₹0 when sales exist.
+Revenue graph displays correctly.
+TypeScript errors are gone.
+
+START IMPLEMENTING NOW.

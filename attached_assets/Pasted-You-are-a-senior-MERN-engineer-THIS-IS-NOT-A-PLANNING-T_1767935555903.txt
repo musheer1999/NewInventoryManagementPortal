@@ -1,0 +1,121 @@
+You are a senior MERN engineer.
+
+THIS IS NOT A PLANNING TASK.
+YOU MUST WRITE AND MODIFY CODE.
+
+--------------------------------------------------
+CRITICAL CONTEXT
+--------------------------------------------------
+• The Revenue tab UI already exists
+• Revenue values are ALWAYS ₹0
+• Sell bills DO exist in the database
+• Profit calculation already works
+• Backend is partially implemented
+• Replit has previously replied "Checkpoint made"
+  WITHOUT modifying files — THIS IS NOT ACCEPTABLE
+
+YOU MUST:
+• Open files
+• Modify files
+• Save files
+• Show real data on UI
+
+--------------------------------------------------
+ROOT CAUSE TO FIX
+--------------------------------------------------
+Revenue is not being calculated or returned from backend.
+
+Revenue definition (MANDATORY):
+Revenue = SUM(sellingPrice × quantity)
+from SellBill.items
+
+This is NOT profit.
+This does NOT subtract expenses.
+
+--------------------------------------------------
+STEP 1 — BACKEND (REQUIRED)
+--------------------------------------------------
+Open and MODIFY:
+
+server/storage.ts
+
+Implement or FIX a function that:
+• Reads SellBill collection
+• Aggregates revenue by month for a given year
+• Calculates:
+  - currentMonthRevenue
+  - yearlyRevenue
+  - monthlyRevenue[Jan–Dec]
+
+Example logic (conceptual, not copy‑paste):
+--------------------------------------------------
+For each SellBill:
+  For each item:
+    revenue += item.sellingPrice * item.quantity
+
+Group by billDate month & year.
+
+--------------------------------------------------
+STEP 2 — API ROUTE (REQUIRED)
+--------------------------------------------------
+Open and MODIFY:
+
+server/routes.ts
+
+Add or FIX an endpoint:
+GET /dashboard/revenue?year=YYYY
+
+Response MUST return:
+{
+  currentMonthRevenue: number,
+  yearlyRevenue: number,
+  monthlyRevenue: number[12]
+}
+
+--------------------------------------------------
+STEP 3 — FRONTEND WIRING (REQUIRED)
+--------------------------------------------------
+Open and MODIFY:
+
+client/pages/dashboard.tsx
+
+• Replace placeholder revenue values
+• Fetch revenue from backend endpoint
+• Wire values to:
+  - Current Month Revenue card
+  - Yearly Revenue card
+  - Monthly Revenue graph
+
+• Ensure year selector triggers refetch
+
+--------------------------------------------------
+STEP 4 — VERIFICATION (MANDATORY)
+--------------------------------------------------
+After implementation:
+1) Create ONE Sell Bill
+2) Revenue MUST update immediately
+3) Monthly Revenue graph MUST show bars
+4) Profit tab MUST remain unchanged
+
+--------------------------------------------------
+STRICT RULES
+--------------------------------------------------
+• Do NOT remove profit logic
+• Do NOT reset database
+• Do NOT return “Checkpoint made” without file changes
+• At least these files MUST be modified:
+  - server/storage.ts
+  - server/routes.ts
+  - client/pages/dashboard.tsx
+
+--------------------------------------------------
+FAIL CONDITION
+--------------------------------------------------
+If revenue still shows ₹0 after selling,
+this task is FAILED.
+
+--------------------------------------------------
+SUCCESS CONDITION
+--------------------------------------------------
+Revenue cards and graph show correct values
+based on SellBill data.

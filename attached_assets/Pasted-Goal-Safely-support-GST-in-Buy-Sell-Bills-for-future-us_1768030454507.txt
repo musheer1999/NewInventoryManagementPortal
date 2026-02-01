@@ -1,0 +1,78 @@
+Goal:Safely support GST in Buy & Sell Bills for future use (GST reports, P&L, accountant exports) without changing existing calculations or dashboards.
+
+🔧 Backend Changes Only (NO breaking UI)
+
+1️⃣ Schema Validation (already done correctly)
+
+Confirm the following fields exist and remain OPTIONAL:
+
+buy_bills
+
+dealer_gst_number (text, nullable)
+
+gst_percentage (numeric, nullable)
+
+gst_amount (numeric, nullable)
+
+sell_bills
+
+customer_gst_number (text, nullable)
+
+gst_percentage (numeric, nullable)
+
+gst_amount (numeric, nullable)
+
+⚠️ Do not enforce GST as required anywhere.
+
+2️⃣ createBuyBill — GST Calculation (Store Only)
+
+Ensure GST is:
+
+Calculated only if gstPercentage is provided
+
+Stored separately
+
+NOT added to totalAmount
+
+const totalAmount = req.items.reduce( (sum, item) => sum + item.buyPrice * item.quantity, 0 ); const gstAmount = req.gstPercentage ? (totalAmount * req.gstPercentage) / 100 : null; await tx.insert(buyBills).values({ dealerName: req.dealerName, dealerGSTNumber: req.dealerGSTNumber ?? null, gstPercentage: req.gstPercentage ?? null, gstAmount: gstAmount?.toFixed(2) ?? null, billDate: req.billDate, totalAmount: totalAmount.toFixed(2), });
+
+✔ Keeps inventory valuation GST‑neutral✔ Safe for historical data✔ Accountant‑friendly
+
+3️⃣ createSellBill — GST Calculation (Store Only)
+
+GST:
+
+Applies to sale value
+
+Stored separately
+
+Does NOT affect profit
+
+const gstAmount = req.gstPercentage ? (billTotalAmount * req.gstPercentage) / 100 : 0; await tx.update(sellBills).set({ totalProfit: billTotalProfit.toFixed(2), totalAmount: billTotalAmount.toFixed(2), gstAmount: gstAmount.toFixed(2), });
+
+✔ Profit remains clean✔ GST ready for invoices later✔ No dashboard impact
+
+4️⃣ Dashboard & Reports — DO NOTHING (Important)
+
+❌ Do NOT include GST in:
+
+Profit
+
+Revenue
+
+Inventory value
+
+Expense reports
+
+Your current queries are correct — keep them unchanged.
+
+🧠 Design Decisions (Why this is correct)
+
+GST is a liability, not income
+
+Profit = Selling price − Buy price (GST excluded)
+
+GST can change by law → storing separately = future proof
+
+Historical bills stay valid forever
+

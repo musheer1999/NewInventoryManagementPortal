@@ -1,0 +1,135 @@
+Role:
+You are a senior backend engineer working on an existing production‑ready MERN + Drizzle + PostgreSQL application.
+
+IMPORTANT CONSTRAINTS
+
+This is a LIVE, WORKING application
+
+DO NOT redesign schemas
+
+DO NOT change existing calculations
+
+DO NOT modify dashboards or frontend
+
+DO NOT introduce breaking changes
+
+Backend correctness + future GST safety ONLY
+
+🎯 GOAL
+Safely support GST in Buy & Sell Bills for future use (GST reports, invoices, accountant exports) while keeping:
+
+Inventory valuation GST‑neutral
+
+Profit calculations GST‑neutral
+
+Revenue calculations GST‑neutral
+
+All existing dashboards unchanged
+
+GST must be stored, optional, and isolated.
+
+1️⃣ SCHEMA VERIFICATION (NO CHANGES UNLESS MISSING)
+Confirm these fields exist and remain OPTIONAL / NULLABLE:
+
+buy_bills
+dealer_gst_number (text, nullable)
+
+gst_percentage (numeric, nullable)
+
+gst_amount (numeric, nullable)
+
+sell_bills
+customer_gst_number (text, nullable)
+
+gst_percentage (numeric, nullable)
+
+gst_amount (numeric, nullable)
+
+❗ DO NOT make GST mandatory
+❗ DO NOT add constraints
+❗ DO NOT add defaults that change old data
+
+2️⃣ FIX createBuyBill — STORE GST ONLY
+Rules
+GST applies on purchase value
+
+GST is stored separately
+
+GST must NOT affect:
+
+totalAmount
+
+averageBuyPrice
+
+inventory value
+
+profit
+
+REQUIRED LOGIC (verify / fix if needed)
+const totalAmount = req.items.reduce(
+  (sum, item) => sum + item.buyPrice * item.quantity,
+  0
+);
+
+const gstAmount =
+  req.gstPercentage != null
+    ? (totalAmount * req.gstPercentage) / 100
+    : null;
+
+await tx.insert(buyBills).values({
+  dealerName: req.dealerName ?? null,
+  dealerGSTNumber: req.dealerGSTNumber ?? null,
+  gstPercentage: req.gstPercentage ?? null,
+  gstAmount: gstAmount ? gstAmount.toFixed(2) : null,
+  billDate: req.billDate,
+  totalAmount: totalAmount.toFixed(2),
+});
+✅ Inventory remains clean
+✅ Old data unaffected
+✅ GST audit‑safe
+
+3️⃣ FIX createSellBill — STORE GST ONLY
+Rules
+GST applies on selling amount
+
+GST must NOT affect:
+
+profit
+
+stock
+
+revenue
+
+dashboards
+
+REQUIRED LOGIC (verify / fix if needed)
+const gstAmount =
+  req.gstPercentage != null
+    ? (billTotalAmount * req.gstPercentage) / 100
+    : 0;
+
+await tx.update(sellBills).set({
+  totalProfit: billTotalProfit.toFixed(2),
+  totalAmount: billTotalAmount.toFixed(2),
+  gstAmount: gstAmount.toFixed(2),
+});
+✅ Profit stays accurate
+✅ GST ready for invoices
+✅ No dashboard impact
+
+4️⃣ DASHBOARD & REPORTS — DO NOTHING 🚫
+Explicitly verify that:
+
+GST is NOT included in:
+
+profit
+
+revenue
+
+inventory value
+
+expenses
+
+charts
+
+If GST appears anywhere in dashboard logic → REMOVE IT.

@@ -1,0 +1,87 @@
+You are a senior frontend React engineer.
+
+IMPORTANT CONTEXT:
+• Backend is COMPLETE and WORKING
+• Expenses feature already exists
+• Do NOT modify backend files
+• This task is FRONTEND‑ONLY
+• Make UI changes ONLY
+
+--------------------------------------------------
+TASK 1: FIX "RECENT EXPENSES" TABLE FILTER
+--------------------------------------------------
+
+On the Expenses page:
+
+Add a Month & Year selector ABOVE the "Recent Expenses" table.
+
+Requirements:
+• Month dropdown (Jan–Dec)
+• Year dropdown (current year ± 1)
+• Default = current month & year
+• When selection changes:
+  - Filter expenses list accordingly
+  - Fetch filtered data from existing API if supported
+  - OR filter client‑side if data already loaded
+
+UI:
+• Place selector on the right side above the table
+• Match style used in Transactions date filter
+• Do NOT redesign the table
+
+--------------------------------------------------
+TASK 2: FIX EXPENSE GRAPH UI (CRITICAL)
+--------------------------------------------------
+
+Current issue:
+• Expense graph shows a very wide red bar
+• Bar spacing and width look incorrect
+
+Required fix:
+• Make Expense graph UI EXACTLY MATCH the Dashboard profit graph
+
+This includes:
+• Same bar thickness
+• Same spacing between bars
+• Same padding inside chart container
+• Same responsive behavior
+• Same axis styling
+
+IMPORTANT:
+• Reuse the SAME chart configuration used in:
+  "Monthly Net Profit Overview"
+• Only change data source (expenses instead of profit)
+• Do NOT invent a new chart style
+
+--------------------------------------------------
+CHART TECH RULES
+--------------------------------------------------
+
+• Use the same chart library already used (Chart.js / Recharts)
+• Match:
+  - barSize / barThickness
+  - categoryPercentage
+  - barPercentage
+• Ensure graph looks clean even if only ONE month has data
+
+--------------------------------------------------
+QUALITY RULES
+--------------------------------------------------
+
+• Do NOT change backend
+• Do NOT break existing expense creation
+• Do NOT break dashboard profit calculations
+• No layout shift
+• No console errors
+• UI must look professional and consistent
+
+--------------------------------------------------
+FINAL RESULT EXPECTED
+--------------------------------------------------
+
+After changes:
+• User can select Month & Year for Recent Expenses
+• Expense list updates correctly
+• Expense graph looks clean and proportional
+• Graph style matches Dashboard exactly
+• No regression in existing features

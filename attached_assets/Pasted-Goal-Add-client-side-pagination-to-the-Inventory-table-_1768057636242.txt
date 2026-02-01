@@ -1,0 +1,86 @@
+Goal
+Add client‑side pagination to the Inventory table so the list remains usable even with 1000+ products.
+
+⚠️ Important Rules
+
+❌ Do NOT change backend, hooks, API, or database
+
+❌ Do NOT change table UI, columns, or styling
+
+❌ Do NOT change ProductHistoryDialog (already paginated)
+
+✅ Only update inventory.tsx
+
+✅ Pagination should work after search filtering
+
+🔧 Implementation Requirements
+1️⃣ Add Pagination State (Top of Inventory component)
+Add these states inside Inventory():
+
+const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 10;
+2️⃣ Apply Pagination AFTER Search Filter
+After filteredProducts is computed, add:
+
+const totalPages = Math.ceil((filteredProducts?.length || 0) / itemsPerPage);
+
+const paginatedProducts = useMemo(() => {
+  if (!filteredProducts) return [];
+  const start = (currentPage - 1) * itemsPerPage;
+  return filteredProducts.slice(start, start + itemsPerPage);
+}, [filteredProducts, currentPage]);
+3️⃣ Reset Page When Search Changes
+Add this useEffect:
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [search]);
+4️⃣ Replace Table Mapping Logic
+❌ Replace this:
+
+filteredProducts?.map((product) => (
+✅ With this:
+
+paginatedProducts.map((product) => (
+No other table code should be changed.
+
+5️⃣ Add Pagination Controls BELOW the Table
+Add this below the </Table> block, still inside the same Card:
+
+{totalPages > 1 && (
+  <div className="flex items-center justify-between px-4 py-3 border-t bg-white">
+    <p className="text-sm text-muted-foreground">
+      Page {currentPage} of {totalPages}
+    </p>
+    <div className="flex gap-2">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+        disabled={currentPage === 1}
+      >
+        <ChevronLeft className="w-4 h-4 mr-1" />
+        Previous
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+        disabled={currentPage === totalPages}
+      >
+        Next
+        <ChevronRight className="w-4 h-4 ml-1" />
+      </Button>
+    </div>
+  </div>
+)}
+🧠 Expected Result
+Inventory table shows 10 products per page
+
+Search works across all products
+
+Pagination updates automatically after search
+
+UI remains exactly the same
+
+Performance stays smooth even with 1000+ items

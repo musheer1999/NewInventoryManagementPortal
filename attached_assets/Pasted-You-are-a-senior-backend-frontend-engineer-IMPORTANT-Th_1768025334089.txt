@@ -1,0 +1,100 @@
+You are a senior backend + frontend engineer.
+IMPORTANT:
+• This is an EXISTING production‑style MERN app
+• DO NOT redesign UI
+• DO NOT add new features
+• ONLY fix year‑based graph data bugs
+• Keep changes minimal and safe
+
+-----------------------------------
+BUG DESCRIPTION
+-----------------------------------
+Expense, Profit, and Revenue graphs show ZERO data for previous years,
+even though tables show correct records.
+
+Frontend already switches year correctly.
+Backend returns wrong data.
+
+-----------------------------------
+ROOT CAUSE
+-----------------------------------
+Backend aggregation queries still depend on CURRENT YEAR logic.
+They use:
+  billDate >= startOfYear
+instead of:
+  billDate BETWEEN startOfYear AND endOfYear
+
+-----------------------------------
+TASK 1: FIX DASHBOARD STATS (CRITICAL)
+-----------------------------------
+Update:
+  storage.getDashboardStats(year?: number)
+
+RULES:
+• If year is provided:
+    start = `${year}-01-01`
+    end   = `${year}-12-31`
+• If year is NOT provided:
+    use current year
+
+FIX ALL queries to use BETWEEN:
+
+1) Monthly profit
+2) Yearly profit
+3) Monthly revenue
+4) Yearly revenue
+5) Monthly chart data (profit + revenue)
+6) Expense subtraction logic
+
+IMPORTANT:
+• Do NOT use >= startOfYear
+• Use BETWEEN start AND end everywhere
+• Chart data MUST return months for selected year
+
+-----------------------------------
+TASK 2: FIX EXPENSE SUMMARY
+-----------------------------------
+Update:
+  storage.getExpenseSummary(year?: number)
+
+RULES:
+• Apply the SAME year logic as dashboard
+• Monthly expense graph must show correct data for ANY year
+• Replace >= startOfYear with BETWEEN start AND end
+
+-----------------------------------
+TASK 3: ROUTES
+-----------------------------------
+Confirm routes correctly forward year:
+
+Dashboard:
+  GET /dashboard/stats?year=YYYY
+
+Expenses:
+  GET /expenses/summary?year=YYYY
+
+If missing, add year forwarding ONLY.
+No refactor.
+
+-----------------------------------
+TASK 4: FRONTEND (MINIMAL)
+-----------------------------------
+Ensure frontend passes year query param:
+• Dashboard profit graph
+• Dashboard revenue graph
+• Expense graph
+
+Do NOT:
+• Change chart library
+• Change bar size
+• Change UI layout
+
+-----------------------------------
+SUCCESS CONDITIONS
+-----------------------------------
+• Selecting 2025 shows 2025 data
+• Selecting 2026 shows 2026 data
+• Expense, Profit, Revenue graphs all match tables
+• No breaking changes
+• No unused code
+• No console errors

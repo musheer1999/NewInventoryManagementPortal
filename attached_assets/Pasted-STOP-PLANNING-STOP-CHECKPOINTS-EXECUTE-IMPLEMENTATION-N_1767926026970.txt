@@ -1,0 +1,79 @@
+STOP PLANNING.
+STOP CHECKPOINTS.
+
+EXECUTE IMPLEMENTATION NOW.
+
+You already created a checkpoint.
+Now you MUST MODIFY FRONTEND FILES and WRITE CODE.
+
+--------------------------------------------------
+MANDATORY ACTIONS (NO MORE PLANNING)
+--------------------------------------------------
+
+1) MODIFY the existing Expenses page file
+   (client/pages/expenses.tsx or equivalent)
+
+IMPLEMENT a TAB LAYOUT with THREE tabs:
+- Add Expense
+- Expense List
+- Expense Graph
+
+MOVE existing components into tabs:
+• Expense form → Add Expense tab
+• Recent expenses table → Expense List tab
+• Expense trends chart → Expense Graph tab
+
+--------------------------------------------------
+2) IMPLEMENT FILTER CONTROLS (WRITE CODE)
+--------------------------------------------------
+
+Expense List tab:
+• Add Month dropdown (Jan–Dec)
+• Add Year dropdown (current year ± 5)
+• Default = current month & year
+• Changing filters MUST update the table data
+
+Expense Graph tab:
+• Add Year selector dropdown
+• Default = current year
+• Graph MUST update when year changes
+
+--------------------------------------------------
+3) FIX EXPENSE GRAPH UI (WRITE CODE)
+--------------------------------------------------
+
+The Expense Graph MUST visually match the
+MAIN DASHBOARD profit graph.
+
+Requirements:
+• Same bar width
+• Same spacing
+• Same padding
+• Same responsiveness
+• Reuse the SAME chart configuration
+• Only data source changes (expenses instead of profit)
+
+--------------------------------------------------
+4) MODIFY MAIN DASHBOARD GRAPH (WRITE CODE)
+--------------------------------------------------
+
+On the MAIN DASHBOARD page:
+
+• Add a Year selector above "Monthly Net Profit Overview"
+• Default = current year
+• Changing year MUST update the profit graph
+• Graph style MUST remain unchanged
+
+--------------------------------------------------
+ABSOLUTE RULES
+--------------------------------------------------
+
+• WRITE ACTUAL CODE NOW
+• MODIFY FRONTEND FILES
+• SHOW FILE DIFFS
+• DO NOT create another checkpoint
+• DO NOT explain intentions
+• DO NOT refactor backend
+• DO NOT break existing features
+
+BEGIN IMPLEMENTATION IMMEDIATELY.

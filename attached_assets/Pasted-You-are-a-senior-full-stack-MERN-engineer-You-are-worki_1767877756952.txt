@@ -1,0 +1,150 @@
+You are a senior full‑stack MERN engineer.
+
+You are working on an ALREADY EXISTING inventory, billing, and profit
+management web application (MERN stack).
+
+IMPORTANT:
+• DO NOT rewrite the whole app
+• DO NOT remove existing features
+• ONLY extend the current application safely
+• Keep UI consistent with existing dashboard design
+• Frontend and backend are already connected
+
+--------------------------------------------------
+NEW FEATURE TO ADD: EXPENSE MANAGEMENT
+--------------------------------------------------
+
+The application must support recording shop expenses and adjusting profit
+calculations accordingly.
+
+--------------------------------------------------
+DATABASE CHANGES
+--------------------------------------------------
+
+ADD a new collection:
+
+Expense
+- amount (number, required)
+- expenseType (string, required)
+  Allowed values:
+  • Transport
+  • Rent
+  • Electricity
+  • Salary
+  • Miscellaneous
+- description (string, optional)
+- expenseDate (date, required)
+- createdAt (date)
+
+--------------------------------------------------
+NAVIGATION UPDATE
+--------------------------------------------------
+
+In the LEFT SIDEBAR:
+• Add a new menu item **below "Transactions"**
+• Label: **Expenses**
+• Icon similar style to other menu items
+
+--------------------------------------------------
+PAGE: EXPENSE ENTRY
+--------------------------------------------------
+
+Create a new page: **Expense Entry**
+
+Form fields:
+- Amount (₹) (required)
+- Expense Type (dropdown, required)
+- Expense Date (date picker, default = today)
+- Description (optional)
+
+Actions:
+- Save Expense
+- Show success toast on save
+- Reset form after save
+
+--------------------------------------------------
+PAGE: EXPENSE DASHBOARD
+--------------------------------------------------
+
+Create an **Expense Dashboard** page similar to the main Dashboard UI.
+
+Show the following cards at top:
+1) Current Month Expense (₹)
+2) Yearly Expense (₹)
+
+Below cards:
+• Monthly Expense Graph
+  - X axis: Months
+  - Y axis: Expense amount
+  - Data from Expense collection
+  - Use same chart library already used
+
+--------------------------------------------------
+DASHBOARD PROFIT UPDATE (VERY IMPORTANT)
+--------------------------------------------------
+
+UPDATE existing PROFIT calculations:
+
+Net Profit = Sales Profit − Expenses
+
+Changes required:
+
+1) Dashboard cards:
+• Current Month Profit must show:
+  (Current Month Sales Profit − Current Month Expenses)
+
+• Yearly Profit must show:
+  (Total Year Sales Profit − Total Year Expenses)
+
+2) Monthly Profit Graph:
+• Use NET PROFIT values
+• Month profit = sales profit − expense for that month
+
+--------------------------------------------------
+TRANSACTIONS & DATA FLOW
+--------------------------------------------------
+
+• Expenses are NOT inventory items
+• Expenses do NOT affect stock
+• Expenses only affect profit calculation
+
+--------------------------------------------------
+API ENDPOINTS TO ADD
+--------------------------------------------------
+
+POST   /expenses
+GET    /expenses
+GET    /expenses/summary
+GET    /expenses?month=YYYY-MM
+
+--------------------------------------------------
+FRONTEND REQUIREMENTS
+--------------------------------------------------
+
+• Expense pages must be fully implemented
+• Routing must be added properly
+• Expenses must be editable & deletable
+• UI must match existing design language
+• Use ₹ everywhere
+• Show loading & error states
+• Do NOT break existing Buy / Sell / Inventory flows
+
+--------------------------------------------------
+IMPORTANT RULES
+--------------------------------------------------
+
+• Do NOT remove existing code
+• Extend schemas safely
+• Use MongoDB aggregation for monthly summaries
+• Profit dashboard MUST reflect expense deduction
+• Keep performance reasonable
+
+--------------------------------------------------
+FINAL RESULT EXPECTATION
+--------------------------------------------------
+
+After implementation:
+• User can record daily shop expenses
+• User can view monthly & yearly expenses
+• Dashboard shows NET profit (profit − expense)
+• Existing inventory, sales & billing work unchanged

@@ -1,0 +1,328 @@
+You are a senior full‑stack MERN engineer.
+
+Build a COMPLETE inventory, billing, and profit management web application
+using the MERN stack.
+
+This project will run ONLY on localhost.
+DO NOT deploy.
+DO NOT add authentication.
+Single‑user system.
+
+--------------------------------------------------
+TECH STACK
+--------------------------------------------------
+Frontend: React (Vite preferred)
+Backend: Node.js + Express
+Database: MongoDB (local)
+Charts: Chart.js or Recharts
+Styling: Simple CSS or Tailwind
+State: React hooks only
+Currency: Indian Rupee (₹)
+
+--------------------------------------------------
+CORE FEATURES (HIGH LEVEL)
+--------------------------------------------------
+• Product inventory management
+• UNIQUE ID–based product identification
+• Buy products (inventory entry)
+• Sell products
+• Multi‑product bills (single transaction)
+• Manual bill date selection
+• Dealer & customer details (optional)
+• Average buy price calculation
+• Profit calculation
+• Inventory tracking
+• Dashboard with profit & inventory
+• Daily transactions with edit/delete
+• Inventory drill‑down with full buy history
+
+--------------------------------------------------
+VERY IMPORTANT: UNIQUE ID RULE
+--------------------------------------------------
+EVERY product MUST have one permanent uniqueID.
+
+uniqueID is generated using:
+- product name
+- company
+- productID (if available)
+
+Examples:
+- brake-pad-honda-1234
+- engine-oil-castrol
+
+uniqueID rules:
+• Stored in Product table
+• Unique across system
+• Used for auto‑fill in BUY and SELL
+• Never changes once created
+
+--------------------------------------------------
+DATABASE SCHEMAS
+--------------------------------------------------
+
+1) Product
+- name (string, required)
+- company (string, required)
+- productID (string, optional)
+- uniqueID (string, required, unique)
+- quantity (number, required)
+- averageBuyPrice (number, required)
+- createdAt (date)
+
+2) BuyBill
+- dealerName (string, optional)
+- billDate (date, required)
+- items: [
+    {
+      productRef (ObjectId),
+      uniqueID (string),
+      buyPrice (number),
+      quantity (number),
+      totalCost (number)
+    }
+  ]
+- totalBillAmount (number)
+
+3) SellBill
+- customerName (string, optional)
+- customerPhone (string, optional)
+- billDate (date, required)
+- items: [
+    {
+      productRef (ObjectId),
+      uniqueID (string),
+      sellingPrice (number),
+      quantity (number),
+      profitPerUnit (number),
+      totalProfit (number)
+    }
+  ]
+- totalBillProfit (number)
+
+--------------------------------------------------
+PAGE 1: PURCHASE ENTRY (BUY INVENTORY)
+--------------------------------------------------
+
+Purpose:
+Add inventory using SINGLE or MULTIPLE products in ONE bill.
+
+Bill‑level fields:
+- Bill Date (date picker, default = today)
+- Dealer Name (optional)
+
+Product rows (dynamic, multiple allowed):
+- uniqueID (optional)
+- name
+- company
+- productID (optional)
+- MRP (optional)
+- buy price
+- quantity
+
+Buttons:
+- Add Another Product
+- Remove Product
+- Submit Bill
+
+Auto‑Fill Logic:
+• If uniqueID is entered:
+  - Auto‑fill name, company, productID
+• If first time product:
+  - uniqueID can be skipped
+  - System generates uniqueID automatically
+
+Business Logic:
+• Existing product:
+  - Increase quantity
+  - Recalculate average buy price:
+    ((oldAvg × oldQty) + (newPrice × newQty)) / totalQty
+
+• New product:
+  - Create product
+  - averageBuyPrice = buy price
+
+• totalBillAmount = sum of all item totalCost
+• Display currency as ₹ everywhere
+
+--------------------------------------------------
+PAGE 2: SELL ENTRY (SELL PRODUCTS)
+--------------------------------------------------
+
+Purpose:
+Sell MULTIPLE products to ONE customer in ONE bill.
+
+Bill‑level fields:
+- Bill Date (date picker, default = today)
+- Customer Name (optional)
+- Customer Phone (optional)
+
+Product rows (dynamic):
+- uniqueID OR productID
+- selling price
+- quantity
+
+Auto‑Fill (MANDATORY):
+• On entering uniqueID or productID:
+  - Auto‑fill name
+  - Auto‑fill company
+  - Auto‑fill average buy price
+  - Validate available stock
+
+Business Logic:
+• Reduce inventory per product
+• profitPerUnit = sellingPrice − averageBuyPrice
+• totalBillProfit = sum of all item profits
+
+--------------------------------------------------
+PAGE 3: DASHBOARD
+--------------------------------------------------
+
+TAB 1: PROFIT
+- Monthly profit graph (based on billDate)
+- Current month profit (₹)
+- Total yearly profit (₹)
+
+TAB 2: INVENTORY
+- Total inventory value:
+  sum(averageBuyPrice × quantity)
+- Show ONLY products where quantity > 0
+
+Inventory table columns:
+name | company | productID | uniqueID | quantity | avg buy (₹) | total value (₹)
+
+Each row MUST be clickable.
+
+--------------------------------------------------
+INVENTORY DETAIL VIEW (ROW CLICK)
+--------------------------------------------------
+
+When a stock row is clicked, open modal or detail page.
+
+Show PRODUCT DETAILS:
+- name
+- company
+- productID
+- uniqueID
+- current quantity
+- average buy price (₹)
+
+BUY HISTORY TABLE (VERY IMPORTANT):
+Show ALL buy records of this product, even if quantity = 1.
+
+Columns:
+- Bill date
+- Dealer name
+- Buy price (₹)
+- Quantity
+- Total cost (₹)
+- Edit
+- Delete
+
+Edit/Delete Logic:
+• Editing updates inventory & average buy price
+• Deleting reduces inventory
+• Prevent delete if inventory becomes negative
+• Dashboard totals must update correctly
+
+--------------------------------------------------
+NEW TAB: DAILY TRANSACTIONS
+--------------------------------------------------
+
+Tab name: "Transactions"
+
+Features:
+- Calendar date picker (default = today)
+
+Two sections:
+
+A) BUY BILLS
+- Bill date
+- Dealer name (if available)
+- Total bill amount (₹)
+- Expand to view products
+- Edit bill
+- Delete bill
+
+B) SELL BILLS
+- Bill date
+- Customer name & phone (if available)
+- Total bill profit (₹)
+- Expand to view products
+- Edit bill
+- Delete bill
+
+--------------------------------------------------
+EDIT & DELETE RULES (CRITICAL)
+--------------------------------------------------
+
+EDIT BUY BILL:
+• Update inventory for ALL items
+• Recalculate average buy price
+
+DELETE BUY BILL:
+• Reverse inventory
+• Prevent delete if stock goes negative
+
+EDIT SELL BILL:
+• Recalculate profit
+• Update inventory
+
+DELETE SELL BILL:
+• Restore inventory
+• Update profit totals
+
+--------------------------------------------------
+API ENDPOINTS
+--------------------------------------------------
+
+POST   /purchase-bills
+POST   /sell-bills
+
+GET    /products
+GET    /products/:id/details
+
+GET    /transactions?date=YYYY-MM-DD
+PUT    /transactions/:id
+DELETE /transactions/:id
+
+GET    /dashboard/profit
+GET    /dashboard/inventory
+
+--------------------------------------------------
+FRONTEND REQUIREMENTS
+--------------------------------------------------
+
+• Clean and simple UI
+• Dynamic add/remove product rows
+• Auto‑fill using uniqueID
+• Expandable transaction bills
+• Clickable inventory rows
+• Confirmation before delete
+• Loading & error states
+• Use ₹ symbol everywhere
+• No unnecessary redesign
+
+--------------------------------------------------
+IMPORTANT RULES
+--------------------------------------------------
+
+• Build from scratch
+• UNIQUE ID MUST be implemented correctly
+• Inventory & profit must always stay consistent
+• Use MongoDB transactions where needed
+• No authentication
+• No deployment
+• Localhost only
+
+--------------------------------------------------
+FINAL OUTPUT
+--------------------------------------------------
+
+• Complete backend
+• Complete frontend
+• Folder structure
+• README with:
+  - npm install
+  - start backend
+  - start frontend
+  - MongoDB setup

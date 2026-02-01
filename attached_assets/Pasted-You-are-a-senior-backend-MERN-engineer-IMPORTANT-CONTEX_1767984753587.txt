@@ -1,0 +1,109 @@
+You are a senior backend MERN engineer.
+
+IMPORTANT CONTEXT
+• This is an EXISTING production‑ready MERN app
+• Profit, revenue, expense graphs already exist
+• Year selector already exists in frontend
+• Graphs show ZERO for previous years → THIS IS A BACKEND BUG
+• DO NOT refactor unrelated code
+• DO NOT redesign UI
+• DO NOT create new pages
+• Make MINIMAL, SAFE backend changes only
+
+--------------------------------------------------
+BUG DESCRIPTION (CRITICAL)
+--------------------------------------------------
+When user selects a previous year (e.g. 2025):
+• Expense table shows correct data
+• BUT expense graph shows zero
+• Profit & revenue graphs also show zero
+
+Reason:
+Backend queries ALWAYS use current year:
+const startOfYear = new Date(now.getFullYear(), 0, 1)
+
+Frontend year selector is ignored by backend.
+
+--------------------------------------------------
+REQUIRED FIX (MANDATORY)
+--------------------------------------------------
+1) Add OPTIONAL `year` query parameter support to:
+   - GET /dashboard/stats
+   - GET /expenses/summary
+
+2) Backend MUST:
+   - Default to current year if `year` not provided
+   - Use selected year if `year` IS provided
+
+--------------------------------------------------
+EXACT BACKEND CHANGES REQUIRED
+--------------------------------------------------
+
+A) Modify storage.getDashboardStats(year?: number)
+
+Replace:
+const now = new Date();
+const startOfYear = new Date(now.getFullYear(), 0, 1)
+
+With:
+const targetYear = year ?? new Date().getFullYear();
+const startOfYear = `${targetYear}-01-01`;
+const endOfYear   = `${targetYear}-12-31`;
+
+Then update ALL queries to use:
+WHERE billDate BETWEEN startOfYear AND endOfYear
+WHERE expenseDate BETWEEN startOfYear AND endOfYear
+
+This applies to:
+• monthly profits
+• yearly profits
+• monthly revenue
+• yearly revenue
+• chartData CTE (sales + expenses)
+
+--------------------------------------------------
+B) Modify storage.getExpenseSummary(year?: number)
+
+Apply SAME year logic:
+• Accept optional year
+• Filter expenses BETWEEN startOfYear and endOfYear
+• Monthly aggregation must respect selected year
+
+--------------------------------------------------
+C) Update routes.ts
+
+Update routes to forward year param:
+
+GET /dashboard/stats?year=YYYY
+→ storage.getDashboardStats(Number(req.query.year))
+
+GET /expenses/summary?year=YYYY
+→ storage.getExpenseSummary(Number(req.query.year))
+
+--------------------------------------------------
+D) DO NOT TOUCH FRONTEND LOGIC
+--------------------------------------------------
+Frontend already sends selected year
+Backend must now respect it
+
+--------------------------------------------------
+EXPECTED RESULT (MUST VERIFY)
+--------------------------------------------------
+• Selecting 2025 shows correct expense graph
+• Selecting 2025 shows correct profit graph
+• Selecting 2025 shows correct revenue graph
+• Current year continues to work
+• No breaking changes
+• No UI changes
+• No console errors
+
+--------------------------------------------------
+FINAL INSTRUCTION
+--------------------------------------------------
+IMPLEMENT THE FIX.
+MODIFY ONLY:
+• storage.ts
+• routes.ts
+
+DO NOT STOP AT A CHECKPOINT.
+WRITE AND SAVE CODE CHANGES.

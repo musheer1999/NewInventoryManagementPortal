@@ -1,0 +1,80 @@
+You are a senior frontend React engineer.
+
+IMPORTANT CONTEXT:
+• This is an EXISTING, WORKING MERN application
+• Inventory detail modal already exists and works
+• Do NOT change backend logic
+• Do NOT remove existing features
+• This task is UI FIX + pagination ONLY
+
+--------------------------------------------------
+TASK 1: FIX INVENTORY DETAIL MODAL POSITIONING
+--------------------------------------------------
+
+Problem:
+• Inventory purchase history modal appears too low
+• Bottom rows are cut off
+• Modal exceeds viewport height
+
+FIX REQUIRED:
+• Center the modal vertically and horizontally
+• Apply max-height: 80vh (or 85vh)
+• Prevent modal from overflowing screen
+• Modal must remain responsive on all screen sizes
+
+--------------------------------------------------
+TASK 2: FIX TABLE SCROLL BEHAVIOR
+--------------------------------------------------
+
+Inside the Product Purchase History modal:
+
+• Header (title + close button) must remain fixed
+• Filter section (month/year dropdowns) must remain fixed
+• ONLY the table body should be scrollable
+
+Implementation:
+• Wrap table body in a scroll container
+• Apply max-height to table body area
+• Enable vertical scrolling for rows only
+
+--------------------------------------------------
+TASK 3: ADD PAGINATION (SAFE & REQUIRED)
+--------------------------------------------------
+
+Add pagination to the purchase history table:
+
+Rules:
+• Show 10–12 rows per page
+• Add Previous / Next buttons
+• Show current page indicator
+• Pagination state must reset when:
+  - Month changes
+  - Year changes
+  - Product changes
+
+IMPORTANT:
+• Pagination must be client-side
+• Do NOT change backend APIs
+
+--------------------------------------------------
+STRICT UI RULES
+--------------------------------------------------
+
+• Do NOT redesign modal UI
+• Do NOT change colors or typography
+• Maintain existing spacing & style
+• No layout shift outside the modal
+• No console errors
+
+--------------------------------------------------
+IMPLEMENTATION RULES
+--------------------------------------------------
+
+• MODIFY ONLY frontend files
+• Update the existing modal component
+• WRITE ACTUAL CODE NOW
+• SHOW FILE DIFFS
+• Do NOT create a new checkpoint
+• Do NOT explain – just implement
+
+BEGIN IMPLEMENTATION NOW.

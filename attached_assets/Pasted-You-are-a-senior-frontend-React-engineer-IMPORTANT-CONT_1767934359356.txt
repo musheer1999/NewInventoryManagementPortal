@@ -1,0 +1,136 @@
+You are a senior frontend React engineer.
+
+IMPORTANT CONTEXT
+--------------------------------------------------
+• This is an EXISTING, WORKING MERN application
+• Dashboard, Inventory, Sales, Expenses already work
+• Backend APIs already exist
+• DO NOT rebuild the project
+• DO NOT delete or refactor existing logic
+• This task is DASHBOARD UI + frontend logic ONLY
+• Maintain current styling and layout consistency
+
+--------------------------------------------------
+GOAL
+--------------------------------------------------
+Enhance the MAIN DASHBOARD by introducing TWO TABS:
+1) Profit (existing behavior)
+2) Revenue (NEW)
+
+Profit tab remains exactly as-is.
+Revenue tab mirrors the same UI but shows revenue data.
+
+--------------------------------------------------
+DASHBOARD STRUCTURE UPDATE
+--------------------------------------------------
+On the Dashboard page:
+• Add a TAB layout at the top of the dashboard content
+Tabs:
+- "Profit"
+- "Revenue"
+
+Default selected tab = Profit
+
+--------------------------------------------------
+TAB 1: PROFIT (NO CHANGE)
+--------------------------------------------------
+This tab should remain EXACTLY the same as current implementation.
+
+Includes:
+• Current Month Net Profit (₹)
+• Yearly Net Profit (₹)
+• Inventory Value (₹)
+• Monthly Net Profit Overview graph
+• Year selector for profit graph
+
+DO NOT modify:
+• UI
+• API usage
+• Calculations
+• Styling
+
+--------------------------------------------------
+TAB 2: REVENUE (NEW)
+--------------------------------------------------
+This tab should show REVENUE information only.
+
+UI MUST MATCH Profit tab exactly.
+
+Cards at top (same layout, same spacing):
+--------------------------------------------------
+1) Current Month Revenue (₹)
+   • Total sales amount for selected month
+2) Yearly Revenue (₹)
+   • Total sales amount for selected year
+3) Inventory Value (₹)
+   • SAME inventory value card (reuse existing logic)
+
+--------------------------------------------------
+REVENUE GRAPH
+--------------------------------------------------
+Below cards, show:
+"Monthly Revenue Overview"
+
+Graph behavior:
+• SAME chart component & styling as Profit graph
+• SAME bar width, spacing, padding, responsiveness
+• X-axis: Months (Jan–Dec)
+• Y-axis: Revenue amount (₹)
+
+Year selector:
+• Dropdown to select year
+• Default = current year
+• Changing year updates revenue graph
+
+--------------------------------------------------
+DATA SOURCE RULES
+--------------------------------------------------
+Revenue definition:
+• Revenue = TOTAL SELL AMOUNT
+• DO NOT subtract expenses
+• DO NOT subtract buy price
+
+Use:
+• Existing SellBill / sales APIs
+• Or existing dashboard summary APIs if available
+
+If backend already supports year filtering:
+• Use it
+
+If not:
+• Pass year as query param safely
+• OR filter client-side without modifying backend
+
+--------------------------------------------------
+TECHNICAL CONSTRAINTS
+--------------------------------------------------
+• Frontend-only changes preferred
+• DO NOT break existing profit logic
+• DO NOT duplicate API calls unnecessarily
+• Reuse existing hooks/components where possible
+• Tabs must preserve state when switching
+• No console errors
+
+--------------------------------------------------
+UI & UX RULES
+--------------------------------------------------
+• Tab switch must be instant
+• No page reload
+• No layout jump
+• Currency symbol must be ₹ everywhere
+• Keep dashboard clean and professional
+• No visual redesign beyond adding tabs
+
+--------------------------------------------------
+FINAL EXPECTED RESULT
+--------------------------------------------------
+After implementation:
+• Dashboard has two tabs: Profit & Revenue
+• Profit tab works exactly as before
+• Revenue tab shows:
+  - Monthly Revenue (₹)
+  - Yearly Revenue (₹)
+  - Inventory Value (₹)
+  - Monthly Revenue graph with year selector
+• Graph UI matches Profit graph perfectly
+• Application remains stable and performant

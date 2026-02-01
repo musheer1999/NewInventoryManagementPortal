@@ -1,0 +1,92 @@
+You are a senior frontend React engineer.
+
+IMPORTANT CONTEXT:
+• This is an EXISTING, WORKING MERN application
+• Inventory table row click opens a Product Purchase History modal
+• Backend APIs already exist and are working
+• DO NOT rebuild backend
+• DO NOT change existing data models
+• This task is UI + frontend logic ONLY
+• Must be SAFE and NON‑BREAKING
+
+--------------------------------------------------
+TASK: IMPROVE INVENTORY PRODUCT HISTORY UI (SCALABLE)
+--------------------------------------------------
+
+CURRENT BEHAVIOR:
+• Clicking an inventory row opens a modal
+• Modal shows FULL purchase history list
+• This list will grow very large over time
+
+UPDATE THIS MODAL WITH A SCALABLE DESIGN.
+
+--------------------------------------------------
+REQUIRED UI CHANGES (STRICT)
+--------------------------------------------------
+
+KEEP:
+• Modal-based design (DO NOT open a new page)
+• Existing table layout
+• Existing data fields
+
+ADD THE FOLLOWING:
+
+--------------------------------------------------
+1) PAGINATION (MANDATORY)
+--------------------------------------------------
+• Show ONLY 10–15 records per page
+• Add pagination controls at the bottom:
+  - Previous
+  - Next
+  - Page number
+• Default page = latest purchases
+• Sort order = newest → oldest
+
+--------------------------------------------------
+2) OPTIONAL DATE FILTER (SECONDARY)
+--------------------------------------------------
+Add filters ABOVE the table:
+• Month dropdown (Jan–Dec)
+• Year dropdown (current year ± 5)
+• Default = All months, current year
+
+Behavior:
+• Changing filters updates table results
+• Filters work together with pagination
+• If no data, show "No records found"
+
+--------------------------------------------------
+3) UX & PERFORMANCE RULES
+--------------------------------------------------
+• Do NOT load entire history at once
+• Paginate client-side if API already returns all data
+• If API supports pagination, use it
+• Preserve modal state when paging/filtering
+• Smooth transitions, no UI flicker
+
+--------------------------------------------------
+VISUAL RULES
+--------------------------------------------------
+• Keep existing modal size
+• Do NOT redesign table
+• Pagination should be subtle and clean
+• Match existing dashboard styles
+• Use ₹ everywhere
+
+--------------------------------------------------
+TECHNICAL CONSTRAINTS
+--------------------------------------------------
+• Frontend-only changes
+• No backend refactor
+• No breaking changes
+• No new routes
+• No console errors
+
+--------------------------------------------------
+FINAL EXPECTED RESULT
+--------------------------------------------------
+• Inventory row click still opens modal
+• Modal loads fast even with years of data
+• User can browse history page-by-page
+• Optional month/year filtering available
+• UI remains clean, professional, and scalable

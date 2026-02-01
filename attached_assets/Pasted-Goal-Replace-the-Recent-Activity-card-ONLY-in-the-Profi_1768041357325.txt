@@ -1,0 +1,95 @@
+Goal
+Replace the “Recent Activity” card ONLY in the Profit tab of Dashboard.tsx with a Profit Breakdown summary that clearly explains how Net Profit is calculated:
+
+Net Profit = Gross Profit − Expenses
+⚠️ Do NOT change any other UI, charts, layout, or logic.
+
+🔧 Backend (NO changes required)
+Do NOT change:
+
+schema.tsx
+
+storage.tsx
+
+routes.tsx
+
+We will reuse existing data safely.
+
+Current backend already provides:
+
+currentMonthProfit → Net Profit
+
+sellBills.totalProfit → Gross Profit (sum)
+
+expenses.amount → Expenses
+
+🔧 Frontend Changes (Dashboard.tsx ONLY)
+1️⃣ Derive values SAFELY (avoid undefined errors)
+At the top of Dashboard.tsx, after if (!stats) return null;
+add:
+
+const grossProfit = Math.max(
+  stats.currentMonthProfit + (stats as any).currentMonthExpense || 0,
+  0
+);
+
+const expenses = Math.abs((stats as any).currentMonthExpense || 0);
+✔ Prevents toFixed crash
+✔ Works even if expense data is missing
+✔ No backend dependency
+
+2️⃣ Replace ONLY the “Recent Activity” card in Profit tab
+🔴 Remove this block (Profit tab only):
+
+<Card className="col-span-3 shadow-sm border-slate-200">
+  <CardHeader>
+    <CardTitle>Recent Activity</CardTitle>
+  </CardHeader>
+  <CardContent>
+    ...
+  </CardContent>
+</Card>
+🟢 Insert this instead (same position):
+<Card className="col-span-3 shadow-sm border-slate-200">
+  <CardHeader>
+    <CardTitle>Profit Breakdown (Jan {graphYear})</CardTitle>
+  </CardHeader>
+
+  <CardContent className="space-y-4">
+    <div className="flex justify-between text-sm">
+      <span className="text-muted-foreground">Gross Profit</span>
+      <span className="font-semibold text-green-600">
+        ₹{grossProfit.toFixed(0)}
+      </span>
+    </div>
+
+    <div className="flex justify-between text-sm">
+      <span className="text-muted-foreground">Expenses</span>
+      <span className="font-semibold text-red-500">
+        ₹{expenses.toFixed(0)}
+      </span>
+    </div>
+
+    <div className="border-t pt-3 flex justify-between">
+      <span className="font-semibold">Net Profit</span>
+      <span
+        className={`font-bold ${
+          stats.currentMonthProfit < 0 ? "text-red-600" : "text-green-600"
+        }`}
+      >
+        {stats.currentMonthProfit < 0 ? "-" : ""}₹
+        {Math.abs(stats.currentMonthProfit).toFixed(0)}
+      </span>
+    </div>
+  </CardContent>
+</Card>
+🧠 Why this works (Important)
+✔ No new API required
+✔ No schema change
+✔ No dashboard stat recalculation
+✔ No UI breakage
+✔ Fixes toFixed undefined error
+✔ Explains how −₹6,068 is formed
+
+Gross Profit  – Expenses  = Net Profit
+₹4,200        – ₹10,268   = -₹6,068

@@ -1,0 +1,138 @@
+You are a senior frontend React engineer.
+
+IMPORTANT CONTEXT:
+This project already has a WORKING backend.
+The following backend files have ALREADY been updated and MUST NOT be changed again:
+- server/routes.ts
+- server/storage.ts
+- shared/schema.ts
+- shared/routes.ts
+
+❌ DO NOT modify backend logic
+❌ DO NOT change database schema
+❌ DO NOT refactor existing API routes
+
+Your task is to FINISH THE FRONTEND ONLY.
+
+--------------------------------------------------
+CURRENT PROBLEM
+--------------------------------------------------
+The backend for Expenses is implemented, but:
+• Frontend pages are missing or incomplete
+• Routing is not fully wired
+• Expense UI is not connected to APIs
+• Dashboard does not yet reflect expenses
+
+--------------------------------------------------
+FRONTEND TASKS (MANDATORY)
+--------------------------------------------------
+
+1) ROUTING (CRITICAL)
+---------------------------------
+Update frontend routing to ensure ALL pages exist and are reachable:
+
+Required pages:
+- Dashboard
+- Inventory
+- Purchase Entry
+- Sell Entry
+- Transactions
+- Expenses (NEW)
+
+The root route ("/") MUST load the Dashboard.
+There must be NO situation where only not-found.tsx renders.
+
+--------------------------------------------------
+2) EXPENSE ENTRY PAGE
+--------------------------------------------------
+Create a new page: **Expenses**
+
+Features:
+- Form to add a new expense
+Fields:
+• Amount (₹, required)
+• Expense Type (dropdown)
+  - Transport
+  - Rent
+  - Electricity
+  - Salary
+  - Miscellaneous
+• Expense Date (date picker, default = today)
+• Description (optional)
+
+Actions:
+• Submit → POST /expenses
+• Show success toast
+• Reset form after save
+
+--------------------------------------------------
+3) EXPENSE DASHBOARD UI
+--------------------------------------------------
+On the Expenses page (or sub-section), show:
+
+Top cards:
+• Current Month Expense (₹)
+• Yearly Expense (₹)
+
+Graph:
+• Monthly Expense Chart
+• X-axis: Month
+• Y-axis: Expense amount
+• Data from backend summary API
+
+Use the SAME chart library and visual style as the main dashboard.
+
+--------------------------------------------------
+4) DASHBOARD PROFIT UPDATE (FRONTEND)
+--------------------------------------------------
+Update the EXISTING Dashboard UI logic to show NET PROFIT:
+
+Net Profit = Sales Profit − Expenses
+
+Frontend must:
+• Fetch expense summary from backend
+• Subtract expenses from sales profit
+• Update:
+  - Current Month Profit card
+  - Yearly Profit card
+  - Monthly Profit graph
+
+UI text should clearly reflect NET profit.
+
+--------------------------------------------------
+5) NAVIGATION UPDATE
+--------------------------------------------------
+Update the LEFT SIDEBAR:
+• Add "Expenses" menu item
+• Place it BELOW "Transactions"
+• Highlight active route properly
+• Keep existing icons & style
+
+--------------------------------------------------
+6) FRONTEND QUALITY RULES
+--------------------------------------------------
+• Use existing UI components
+• Do NOT redesign layout
+• Use ₹ symbol everywhere
+• Handle loading & error states
+• Ensure charts render even with zero data
+• Ensure no console errors
+
+--------------------------------------------------
+ABSOLUTE RULES
+--------------------------------------------------
+• DO NOT touch backend files
+• DO NOT remove existing pages
+• DO NOT break inventory, buy, sell, or transactions
+• Only ADD missing frontend code
+• Ensure frontend is fully connected to backend APIs
+
+--------------------------------------------------
+FINAL RESULT EXPECTED
+--------------------------------------------------
+After completion:
+• Expenses can be added from UI
+• Expenses dashboard shows monthly & yearly totals
+• Main dashboard shows NET profit (profit − expenses)
+• All pages load correctly (no 404)
+• Application remains stable

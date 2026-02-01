@@ -1,0 +1,117 @@
+You are a senior full‑stack MERN engineer.
+
+IMPORTANT CONTEXT
+--------------------------------------------------
+• This is an EXISTING, WORKING application
+• Profit, Inventory, Expenses already work correctly
+• Revenue TAB UI is already added
+• Revenue values are showing ₹0 incorrectly
+• This task is to FIX DATA WIRING, not redesign UI
+• DO NOT remove or break existing profit logic
+
+--------------------------------------------------
+PROBLEM STATEMENT
+--------------------------------------------------
+The Revenue tab UI is visible but:
+• Current Month Revenue = ₹0
+• Yearly Revenue = ₹0
+• Monthly Revenue Graph shows no data
+
+This happens EVEN AFTER sell bills exist.
+
+This means:
+• Revenue aggregation logic is missing or incorrect
+• OR frontend is not using correct backend response
+
+--------------------------------------------------
+REVENUE DEFINITION (CRITICAL)
+--------------------------------------------------
+Revenue MUST be calculated as:
+
+Revenue = SUM of (sellingPrice × quantity)
+from SellBill items
+
+IMPORTANT:
+• Revenue is NOT profit
+• Revenue does NOT subtract buy price
+• Revenue does NOT subtract expenses
+
+--------------------------------------------------
+BACKEND FIX (IF REQUIRED)
+--------------------------------------------------
+Check existing backend/dashboard logic.
+
+If profit endpoint exists like:
+GET /dashboard/profit
+
+Then ADD (or FIX) revenue support by either:
+
+Option A (Preferred):
+• Extend existing dashboard summary endpoint to also return:
+  - monthlyRevenue
+  - yearlyRevenue
+  - monthlyRevenueByMonth[]
+
+Option B:
+• Create a dedicated endpoint:
+  GET /dashboard/revenue?year=YYYY
+
+Revenue aggregation rules:
+• Group SellBills by billDate
+• Sum item.sellingPrice × item.quantity
+• Support year filtering
+• Return month-wise totals for graphs
+
+DO NOT:
+• Modify Buy logic
+• Modify Expense logic
+• Modify Profit calculation
+
+--------------------------------------------------
+FRONTEND FIX (MANDATORY)
+--------------------------------------------------
+On dashboard.tsx (Revenue tab):
+
+• Replace placeholder / zero values
+• Wire cards to ACTUAL revenue values from backend
+
+Cards:
+• Current Month Revenue → backend monthlyRevenue
+• Yearly Revenue → backend yearlyRevenue
+• Inventory Value → reuse existing inventory logic
+
+Graph:
+• Use month-wise revenue data
+• Same chart component as Profit graph
+• Same bar width, spacing, padding
+
+Year selector:
+• Pass selected year to backend
+• Refetch revenue data on change
+
+--------------------------------------------------
+DEBUGGING REQUIREMENTS
+--------------------------------------------------
+• Console.log backend revenue response once (dev only)
+• Ensure SellBill data is being read
+• Ensure aggregation includes ALL sell items
+
+--------------------------------------------------
+STRICT RULES
+--------------------------------------------------
+• Do NOT break profit tab
+• Do NOT refactor unrelated code
+• Do NOT reset database
+• Do NOT remove expenses logic
+• No UI redesign
+• Keep ₹ symbol everywhere
+
+--------------------------------------------------
+FINAL EXPECTED RESULT
+--------------------------------------------------
+After fix:
+• Selling a product increases Revenue instantly
+• Current Month Revenue shows correct value
+• Yearly Revenue shows correct total
+• Monthly Revenue graph displays bars
+• Profit tab continues working unchanged

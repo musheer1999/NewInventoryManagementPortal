@@ -1,0 +1,100 @@
+You are a senior MERN full‑stack engineer.
+
+IMPORTANT CONTEXT
+• This is an EXISTING, WORKING inventory & billing system
+• DO NOT rebuild anything
+• DO NOT break existing logic
+• GST is PHASE‑1 only (data capture + storage)
+• NO GST reporting, NO tax calculations in profit yet
+
+--------------------------------------------------
+GOAL (PHASE‑1 GST SUPPORT)
+--------------------------------------------------
+Add OPTIONAL GST information to Buy and Sell bills
+Store GST values safely for future use
+DO NOT change existing totals or profit logic
+
+--------------------------------------------------
+DATABASE / SCHEMA CHANGES (MINIMAL)
+--------------------------------------------------
+Update schemas ONLY by ADDING fields:
+
+1) buyBills table
+ADD:
+• dealerGSTNumber: string | null
+• gstPercentage: number | null
+• gstAmount: number | null
+
+2) sellBills table
+ADD:
+• customerGSTNumber: string | null
+• gstPercentage: number | null
+• gstAmount: number | null
+
+Rules:
+• All GST fields are OPTIONAL
+• Existing records must continue to work
+• No breaking migrations
+
+--------------------------------------------------
+BACKEND LOGIC
+--------------------------------------------------
+When creating Buy Bill:
+• Accept dealerGSTNumber (optional)
+• Accept gstPercentage (optional)
+• If gstPercentage exists:
+    gstAmount = (totalAmount * gstPercentage) / 100
+• Store gstAmount
+• totalAmount MUST remain unchanged
+
+When creating Sell Bill:
+• Accept customerGSTNumber (optional)
+• Accept gstPercentage (optional)
+• If gstPercentage exists:
+    gstAmount = (totalAmount * gstPercentage) / 100
+• Store gstAmount
+• totalAmount & profit logic MUST remain unchanged
+
+--------------------------------------------------
+FRONTEND UI CHANGES (MINIMAL)
+--------------------------------------------------
+BUY FORM:
+ADD optional fields:
+• Dealer GST Number (text input)
+• GST % (number input)
+
+SELL FORM:
+ADD optional fields:
+• Customer GST Number (text input)
+• GST % (number input)
+
+UI Rules:
+• Fields are OPTIONAL
+• Hidden from dashboard for now
+• Do NOT display GST in totals yet
+• Simple inputs only (no validation logic)
+
+--------------------------------------------------
+API & TYPES
+--------------------------------------------------
+• Update request types to include GST fields
+• Update response types accordingly
+• Fix TypeScript errors if any
+• Do NOT refactor existing APIs
+
+--------------------------------------------------
+STRICT RULES
+--------------------------------------------------
+• No GST calculations in profit
+• No GST in dashboard graphs
+• No report changes
+• No UI redesign
+• No extra features
+
+--------------------------------------------------
+FINAL RESULT
+--------------------------------------------------
+• Buy & Sell bills store GST data safely
+• Old data continues to work
+• App remains stable
+• System is now GST‑ready for future phases
