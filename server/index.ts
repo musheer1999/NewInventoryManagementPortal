@@ -14,6 +14,7 @@ app.use(
       "http://localhost:5173",
       "https://new-inventory-management-portal.vercel.app",
       "https://new-inventory-management-portal-13bqgy224-musheers-projects.vercel.app",
+      "https://new-inventory-management-portal-5l6cy46l6-musheers-projects.vercel.app"
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
