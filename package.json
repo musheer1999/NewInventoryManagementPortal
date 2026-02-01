@@ -4,8 +4,8 @@
   "type": "module",
   "license": "MIT",
 "scripts": {
-  "dev": "vite",
-  "build": "npm install",
+  "dev": "echo \"Use client/package.json for frontend dev\"",
+  "build": "echo \"Frontend build handled by vercel.json\"",
   "server": "npx tsx server/index.ts",
   "start": "npx tsx server/index.ts"
 },
