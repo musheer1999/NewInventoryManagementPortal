@@ -4,7 +4,10 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react()],
-    root: "client",
+
+  css: {
+    postcss: "./postcss.config.js",
+  },
 
   resolve: {
     alias: {
